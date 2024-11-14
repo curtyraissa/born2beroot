@@ -2,71 +2,119 @@
 Configuration of a Debian virtual machine in VirtualBox with a focus on security, system administration, and automated monitoring.
 
 
-SUDO
-su -> entrar na raiz
-apt install sudo -> instalar sudo
-sudo reboot -> reiniciar a maquina
-sudo -V -> mostrar a versao e argumentos passados para configurar e plugins
 
-GRUPOS E USUARIOS
-sudo adduser rcurty-g -> criar utilizador
-sudo addgroup user42 -> criar grupo
-getent group nombre_grupo -> verificar se o grupo foi criado
-cat /etc/group -> verificar quais grupos existem
-sudo adduser group -> add usuario no grupo. ex.: sudo adduser rcurty-g user42
-getent group group_name - > verificar se o usuario esta no grupo. ex.: getent group user42
-nano /etc/group -> verificar se no grupo sudo e user42 esta o nosso login
+### SUDO
+# Entrar como root
+su
+# Instalar sudo
+apt install sudo
+# Reiniciar a máquina
+sudo reboot
+# Mostrar versão e configurações do sudo
+sudo -V
 
-SSH
-sudo apt update -> actualizar os repositórios definidos no ficheiro /etc/apt/sources.list
-sudo apt install openssh-server -> Y -> instalar ferramenta OpenSSH para login remoto com protocolo SSH
-sudo service ssh status -> verificar se esta activo
-nano /etc/ssh/sshd_config -> editar arquivo, #Port 22 = Port 4242, PermitRootLogin prohibit-password = PermitRootLogin no
-nano /etc/ssh/ssh_config -> editar arquivo, #Port 22 = Port 4242 
-sudo service ssh restart -> reiniciar o servico ssh para atualizar as modificacoes
-sudo service ssh status -> verificar o status e confirmar a porta 4242
+### GRUPOS E USUÁRIOS
+# Criar usuário
+sudo adduser rcurty-g
+# Criar grupo
+sudo addgroup user42
+# Verificar se o grupo foi criado
+getent group nombre_grupo
+# Listar todos os grupos existentes
+cat /etc/group
+# Adicionar usuário ao grupo
+sudo adduser rcurty-g user42
+# Verificar se o usuário está no grupo
+getent group group_name  # ex.: getent group user42
+# Verificar se o usuário está nos grupos sudo e user42
+nano /etc/group
 
-UFW
-sudo apt install ufw -> Y -> instalar o ufw 
-sudo ufw enable -> ativar o firewall
-sudo ufw allow 4242 -> permitir que a firewall permita ligacoes a porta 4242
-sudo ufw status -> verificar se esta configurado corretamente
+### SSH
+# Atualizar repositórios
+sudo apt update
+# Instalar OpenSSH para login remoto
+sudo apt install openssh-server
+# Verificar se o SSH está ativo
+sudo service ssh status
+# Editar configuração SSH
+nano /etc/ssh/sshd_config  # Altere #Port 22 para Port 4242 e PermitRootLogin prohibit-password para PermitRootLogin no
+nano /etc/ssh/ssh_config   # Altere #Port 22 para Port 4242
+# Reiniciar o serviço SSH
+sudo service ssh restart
+# Verificar status e confirmar porta 4242
+sudo service ssh status
 
+### UFW (Firewall)
+# Instalar o UFW
+sudo apt install ufw
+# Ativar o firewall
+sudo ufw enable
+# Permitir conexões na porta 4242
+sudo ufw allow 4242
+# Verificar configuração do firewall
+sudo ufw status
 
-SENHA FORTE
-touch /etc/sudoers.d/sudo_config -> criar ficheiro para inserir a config de senha
-mkdir /var/log/sudo -> criar o diretorio sudo para armazenar os comandos
-nano /etc/sudoers.d/sudo_config -> editar o ficheiro criado e introduzir os comandos abaixo
-Defaults  passwd_tries=3
-Defaults  badpass_message="Error"
-Defaults  logfile="/var/log/sudo/sudo_config"
-Defaults  log_input, log_output
-Defaults  iolog_dir="/var/log/sudo"
-Defaults  requiretty
-Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-explicacao: numero de tentativas, mensagem de erro, arquivos do comando sudo, diretorio do arquivo sudo, ativar modo TTY, restringir os diretorios utilizados por sudo.
+### SENHA FORTE - CONFIGURAÇÕES DE SUDO
+# Criar arquivo de configuração do sudo
+touch /etc/sudoers.d/sudo_config
+# Criar diretório para logs do sudo
+mkdir /var/log/sudo
+# Editar o arquivo de configuração do sudo
+nano /etc/sudoers.d/sudo_config
 
-SENHA FORTE 2
-nano /etc/login.defs -> modificar parametros: PASS_MAX_DAYS 99999 => PASS_MAX_DAYS 30, PASS_MIN_DAYS 0 => PASS_MIN_DAYS 2
-sudo apt install libpam-pwquality -> Y -> instalar pacote para continuar a conf.
-nano /etc/pam.d/common-password -> editar arquivo depois de retry=3: minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
-//
-minlen=10 ➤ O número mínimo de caracteres.
-ucredit=-1 ➤ Deve conter pelo menos uma letra maiúscula. Colocamos o - como deve conter pelo menos um caracter, se colocarmos + queremos dizer no máximo esses caracteres.
-dcredit=-1 ➤ Deve conter pelo menos um dígito.
-lcredit=-1 ➤ Deve conter pelo menos uma letra minúscula.
-maxrepeat=3 ➤ Não se pode ter o mesmo carácter mais de 3 vezes seguidas.
-reject_username ➤ Não pode conter o nome do utilizador.
-difok=7 ➤ Deve ter pelo menos 7 caracteres que não façam parte da senha antiga.
-enforce_for_root ➤ Iremos implementar esta política para o utilizador de raiz.
-//
-sudo chage -l username -> verificar se o utilizador esta na regra correta, ex: sudo chage -l root
-sudo chage -m 2 root -> inserir o minimo 2 dias
-sudo chage -M 30 root -> insrir maximo de 30 dias
+# Configurações a serem inseridas no arquivo
+Defaults passwd_tries=3
+Defaults badpass_message="Access denied: Incorrect password. Please check and try again."
+Defaults logfile="/var/log/sudo/sudo_config"
+Defaults log_input, log_output
+Defaults iolog_dir="/var/log/sudo"
+Defaults requiretty
+Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
-CONECTAR VIA SSH
-settings, network, advanced, port forwarding, inserir 2222 e 4242 nas portas.
-hostname -i -> para saber o ip da maquina virtual
-ssh rcurty-g@ip -p 4242 -> na maquina virtual
-ssh rcurty-g@ip -p 4242 -> na maquina real
-sudo ufw status numbered -> para verificar se ta na porta 4242
+# Explicação:
+# - passwd_tries=3: Limite de tentativas de senha.
+# - badpass_message: Mensagem personalizada de erro.
+# - logfile: Arquivo para logs do sudo.
+# - log_input, log_output: Ativar registro de comandos.
+# - iolog_dir: Diretório para logs de entrada e saída.
+# - requiretty: Exigir TTY para segurança.
+# - secure_path: Restringir diretórios utilizados pelo sudo.
+
+### SENHA FORTE - CONFIGURAÇÕES DE LOGIN
+# Editar parâmetros de senha
+nano /etc/login.defs  # Altere PASS_MAX_DAYS para 30 e PASS_MIN_DAYS para 2
+# Instalar pacote de qualidade de senha
+sudo apt install libpam-pwquality
+# Editar arquivo de configurações de senha
+nano /etc/pam.d/common-password
+
+# Configurações para inserir:
+minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root
+
+# Explicação:
+# - minlen=10: Mínimo de 10 caracteres.
+# - ucredit=-1: Pelo menos uma letra maiúscula.
+# - dcredit=-1: Pelo menos um dígito.
+# - lcredit=-1: Pelo menos uma letra minúscula.
+# - maxrepeat=3: Não repetir o mesmo caractere mais de 3 vezes.
+# - reject_username: Não pode conter o nome do usuário.
+# - difok=7: Pelo menos 7 caracteres diferentes da senha antiga.
+# - enforce_for_root: Aplica a política para o usuário root.
+
+# Verificar regras aplicadas ao usuário
+sudo chage -l username  # ex.: sudo chage -l root
+# Definir mínimo de 2 dias para alteração de senha
+sudo chage -m 2 root
+# Definir máximo de 30 dias para expiração de senha
+sudo chage -M 30 root
+
+### CONECTAR VIA SSH
+# Configurar redirecionamento de porta
+# Em "Settings" > "Network" > "Advanced" > "Port Forwarding", insira as portas 2222 e 4242.
+# Obter IP da máquina virtual
+hostname -i
+# Conectar via SSH
+ssh rcurty-g@ip -p 4242  # Na máquina virtual
+ssh rcurty-g@ip -p 4242  # Na máquina real
+# Verificar status do UFW
+sudo ufw status numbered  # para conferir se a porta 4242 está ativa
