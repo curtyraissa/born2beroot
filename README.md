@@ -1,7 +1,7 @@
 # born2beroot
 Configuration of a Debian virtual machine in VirtualBox with a focus on security, system administration, and automated monitoring.
 
-
+##Tutorial
 ### SUDO
 - **Entrar como root**: `su`
 - **Instalar sudo**: `apt install sudo`
