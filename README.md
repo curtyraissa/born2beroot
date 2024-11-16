@@ -87,6 +87,8 @@ minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 e
 - **Verificar status do UFW**: `sudo ufw status numbered` para conferir se a porta 4242 está ativa
 
 ### SCRIPT DE MONITORAMENTO
+inserir os comandos no arquivo monitoring.sh
+sh monitoring.sh
 - **Comandos do Script**:
   - `uname -a` -> ver a arquitetura do SO e a versão do kernel
   - `grep "physical id" /proc/cpuinfo | wc -l` -> exibir o número de núcleos físicos
