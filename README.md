@@ -80,7 +80,7 @@ minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 e
 
 ### CONECTAR VIA SSH
 - **Configurar redirecionamento de porta**:
-  - Em "Settings" > "Network" > "Bridged Adapter" para acesso à rede.
+  - Fechar a maquina > em "Settings" > "Network" > "Bridged Adapter" para acesso à rede.
 - **Obter IP da máquina virtual**: `hostname -I`
 - **Conectar via SSH**:
   - Na máquina real: `ssh rcurty-g@ip -p 4242`
