@@ -32,14 +32,14 @@ Máquinas virtuais são usadas para criar ambientes isolados para testes, desenv
 APPArmor é usado para aumentar a segurança do sistema ao controlar o acesso de aplicativos aos recursos.
 
 
-	##Instrucoes Gerais##
+	## Instrucoes Gerais ##
 	
 - Comparar a assinatura do documento do intra com a assinatura da maquina:
 cd sgoinfre/rcurty-g/born2beroot
 shasum born2beroot.vdi
 
 
-	##Configuração Básica##
+	## Configuração Básica ##
 	
 - máquina não possui um ambiente gráfico
 - uma senha é solicitada antes de conectar-se à máquina -> 42Rcurty-g
@@ -49,7 +49,7 @@ shasum born2beroot.vdi
 - sistema operacional escolhido é Debian -> cat /etc/os-release (ou hostnamectl)
 
 
-	##Usuário##
+	## Usuário ##
 	
 - mostrar usuarios do sistema -> getent passwd
 - mostrar os grupos do usuario -> groups rcurty-g
@@ -81,7 +81,7 @@ Desvantagens:
     Configurações muito rigorosas podem frustrar os usuários.
     
     
-    ##Hostname e Partições##
+    ## Hostname e Partições ##
     
     - verificar se o hostname esta correto -> hostname
     - modificar o hostname pelo login do avaliador e reinicie a maquina -> entrar nos arquivos e substituir rcurty-g42 pelo usuario do avaliador, depois reiniciar a maquina.
@@ -97,7 +97,7 @@ Desvantagens:
      "Durante a instalação do Debian, optei por usar o particionamento automático com LVM criptografado. Isso configurou automaticamente o volume group rcurty-g42--vg e os volumes lógicos para /, swap e /home."
      
      
-     ##SUDO##
+     ## SUDO ##
      
      - verificar se o sudo esta instalado -> sudo -V
      - add user ao grupo sudo -> sudo adduser novo-usuario sudo (ja foi feito usar: groups novo-usuario)
@@ -125,7 +125,7 @@ Desvantagens:
      - para deletar a regra de 8080 -> sudo ufw status numbered -> sudo ufw delete numero-da-regra
      
      
-     ## SUDO ##
+     ## SSH ##
      
      - verificar se esta instalado -> sudo service ssh status (se nao: sudo apt install openssh-server)
      - SSH (Secure Shell) é um protocolo de rede usado para acessar e gerenciar máquinas remotamente com segurança, usando criptografia.
