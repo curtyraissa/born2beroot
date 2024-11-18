@@ -88,19 +88,65 @@ minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 e
 
 ### SCRIPT DE MONITORAMENTO
 inserir os comandos no arquivo monitoring.sh
-sh monitoring.sh
-- **Comandos do Script**:
-  - `uname -a` -> ver a arquitetura do SO e a versão do kernel
-  - `grep "physical id" /proc/cpuinfo | wc -l` -> exibir o número de núcleos físicos
-  - `grep processor /proc/cpuinfo | wc -l` -> número de núcleos virtuais
-  - `free --mega` -> mostrar memória total
-  - `free --mega | awk '$1 == "Mem:" {print $3}'` -> memória usada
-  - `df -m | grep "/dev/" | awk '{use += $3} {total += $2} END {printf("(%d%%)\n"), use/total*100}'` -> uso de disco
-  - `who -b | awk '$1 == "system" {print $3 " " $4}'` -> data/hora do último boot
-  - `if [ $(lsblk | grep "lvm" | wc -l) -gt 0 ]; then echo yes; else echo no; fi` -> verificar uso de LVM
-  - `ss -ta | grep ESTAB | wc -l` -> conexões TCP ativas
-  - `users | wc -w` -> número de usuários logados
-  - `journalctl _COMM=sudo | grep COMMAND | wc -l` -> número de comandos `sudo` executados
+
+## Comandos do Script
+- **`uname -a`**  
+  Mostra informações completas sobre o sistema (kernel, arquitetura, versão do SO, etc.).
+
+- **`grep "physical id" /proc/cpuinfo | wc -l`**  
+  Conta o número de CPUs físicas.
+
+- **`grep processor /proc/cpuinfo | wc -l`**  
+  Conta o número de processadores lógicos (núcleos virtuais).
+
+- **`free --mega | awk '$1 == "Mem:" {print $2}'`**  
+  Exibe a quantidade total de memória RAM em MB.
+
+- **`free --mega | awk '$1 == "Mem:" {print $3}'`**  
+  Exibe a quantidade de memória RAM em uso em MB.
+
+- **`free --mega | awk '$1 == "Mem:" {printf("%.2f"), $3/$2*100}'`**  
+  Calcula o percentual de uso da RAM.
+
+- **`df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_t += $2} END {printf ("%.1fGb\n"), disk_t/1024}'`**  
+  Calcula o espaço total do disco (excluindo a partição `/boot`).
+
+- **`df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_u += $3} END {print disk_u}'`**  
+  Calcula o espaço usado no disco.
+
+- **`df -m | grep "/dev/" | grep -v "/boot" | awk '{disk_u += $3} {disk_t+= $2} END {printf("%d"), disk_u/disk_t*100}'`**  
+  Calcula o percentual de espaço usado no disco.
+
+- **`vmstat 1 2 | tail -1 | awk '{printf $15}'`**  
+  Exibe o percentual de tempo ocioso da CPU.
+
+- **`expr 100 - $cpul`**  
+  Calcula a carga da CPU, subtraindo o tempo ocioso de 100%.
+
+- **`who -b | awk '$1 == "system" {print $3 " " $4}'`**  
+  Mostra a data e hora do último boot do sistema.
+
+- **`lsblk | grep "lvm" | wc -l`**  
+  Verifica se o LVM está ativo (retorna "yes" ou "no").
+
+- **`ss -ta | grep ESTAB | wc -l`**  
+  Conta o número de conexões TCP estabelecidas.
+
+- **`users | wc -w`**  
+  Conta quantos usuários estão logados no sistema.
+
+- **`hostname -I`**  
+  Exibe o endereço IP da máquina.
+
+- **`ip link | grep "link/ether" | awk '{print $2}'`**  
+  Exibe o endereço MAC da interface de rede.
+
+- **`journalctl _COMM=sudo | grep COMMAND | wc -l`**  
+  Conta o número de comandos executados com `sudo`.
+
+- **`wall`**  
+  Envia mensagens para todos os terminais logados, exibindo as informações coletadas pelo script.
+
 
 ### CRONTAB
 - **Configurar para rodar a cada 10 min**:
