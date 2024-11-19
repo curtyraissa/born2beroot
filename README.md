@@ -39,13 +39,13 @@ Configuration of a Debian virtual machine in VirtualBox with a focus on security
 - **Editar o arquivo de configuração do sudo**: `nano /etc/sudoers.d/sudo_config`
 
 #### Configurações a serem inseridas no arquivo:
-Defaults passwd_tries=3
-Defaults badpass_message="Error"
-Defaults logfile="/var/log/sudo/sudo_config"
-Defaults log_input, log_output
-Defaults iolog_dir="/var/log/sudo"
-Defaults requiretty
-Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults passwd_tries=3  
+Defaults badpass_message="Error"  
+Defaults logfile="/var/log/sudo/sudo_config"  
+Defaults log_input, log_output  
+Defaults iolog_dir="/var/log/sudo"  
+Defaults requiretty  
+Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"  
 
 - **Explicação**:
   - `passwd_tries=3`: Limite de tentativas de senha.
