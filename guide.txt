@@ -3,7 +3,7 @@ Uma máquina virtual é um software que simula um computador físico dentro de o
 
 
 2. Por que escolheu Debian como sistema operacional?
-Escolhi Debian por sua estabilidade, segurança e ampla documentação. É ideal para servidores e ambientes de aprendizado, oferecendo um sistema leve e confiável.
+Por sua estabilidade, segurança e ampla documentação. É ideal para servidores e ambientes de aprendizado, oferecendo um sistema leve e confiável.
 
 
 3. Qual é a diferença básica entre Rocky Linux e Debian?
@@ -94,7 +94,6 @@ Desvantagens:
      - mostrar as particoes da maquina virtual -> lsblk
      - explicar sobre LVM:
      O LVM (Logical Volume Manager) é uma ferramenta no Linux que facilita o gerenciamento de discos e partições,  traz flexibilidade e eficiência para gerenciar o armazenamento no Linux, tornando mais fácil lidar com alterações de espaço em disco.
-     "Durante a instalação do Debian, optei por usar o particionamento automático com LVM criptografado. Isso configurou automaticamente o volume group rcurty-g42--vg e os volumes lógicos para /, swap e /home."
      
      
      ## SUDO ##
