@@ -137,5 +137,6 @@ Desvantagens:
      - mostrar o script -> na root -> cat monitoring.sh
      - CRON -> O cron é um gerenciador de tarefas no Linux que permite agendar a execução de comandos ou scripts em intervalos regulares, como a cada minuto, hora ou dia.
      - mostrar conteudo do crontab -> sudo crontab -u root -e
+     - para executar a cada minuto, trocar o 10 por 1 no arquivo e para parar de executar, apagar a linha inteira do arquivo.
      - executar script manualmente -> sh monitoring.sh
      
